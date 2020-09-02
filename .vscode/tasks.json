@@ -1,0 +1,15 @@
+{
+    "version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Build Client",
+			"command": "dotnet",
+			"type": "process",
+			"args": [
+			  "build",
+			  "${workspaceFolder}/ArcadeFlyer.csproj"
+			],
+			"problemMatcher": "$msCompile"
+		}
+    ]
+}

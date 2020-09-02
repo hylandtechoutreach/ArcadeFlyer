@@ -1,0 +1,18 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": ".NET Core Client",
+			"type": "coreclr",
+			"request": "launch",
+			"preLaunchTask": "Build Client",
+			"program": "${workspaceFolder}/bin/Debug/netcoreapp3.0/ArcadeFlyer.dll",
+			"args": [],
+			"cwd": "${workspaceFolder}/",
+			"console": "internalConsole",
+			"internalConsoleOptions":"openOnFirstSessionStart",
+			"justMyCode": true,            
+			"stopAtEntry": false,
+		}
+	]
+}
