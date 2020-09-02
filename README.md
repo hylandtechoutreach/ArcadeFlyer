@@ -9,7 +9,7 @@ The setup is based on [this boilerplate project](https://github.com/andrew-r-kin
 1. Download and Install [Git](https://git-scm.com/downloads)   
 1. Fork and clone the [Arcade Flyer GitHub Repository](https://github.com/hylandtechoutreach/ArcadeFlyer.git)
     - In the command line: `git clone <URL>`
-    - In VS Code: `Ctrl`+`Shift`+`P` to open the Command Palette, then run "Git: Clone" and enter
+    - In VS Code: `Ctrl`+`Shift`+`P` to open the Command Palette, then run "Git: Clone" and enter the URL
     - Alternatively, download the code directly without cloning it
 1. Download and Install [MonoGame](https://www.monogame.net/downloads/)
 1. Download and Install the [.NET Core SDK (3.x)](https://dotnet.microsoft.com/download)
