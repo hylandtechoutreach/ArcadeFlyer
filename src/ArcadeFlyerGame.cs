@@ -65,11 +65,11 @@ namespace ArcadeFlyer2D
             // Start batch draw
             spriteBatch.Begin();
 
-            // Rectangle containing the Player sprite
-            Rectangle playerSourceRect = new Rectangle(0, 0, playerImage.Width, playerImage.Height);
+            // Rectangle that will contain the Player sprite on the screen
+            Rectangle playerDestinationRect = new Rectangle(0, 0, playerImage.Width, playerImage.Height);
 
             // Draw the player sprite in the proper place
-            spriteBatch.Draw(playerImage, playerSourceRect, null, Color.White);
+            spriteBatch.Draw(playerImage, playerDestinationRect, Color.White);
 
             // End batch draw
             spriteBatch.End();
