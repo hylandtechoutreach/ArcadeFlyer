@@ -7,10 +7,10 @@ namespace ArcadeFlyer2D
     class ArcadeFlyerGame : Game
     {
         // Graphics Manager
-        GraphicsDeviceManager graphics;
+        private GraphicsDeviceManager graphics;
 
         // Sprite Drawer
-        SpriteBatch spriteBatch;
+        private SpriteBatch spriteBatch;
         
         // Initalized the game
         public ArcadeFlyerGame()
