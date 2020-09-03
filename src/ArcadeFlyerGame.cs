@@ -12,8 +12,8 @@ namespace ArcadeFlyer2D
         // Sprite Drawer
         private SpriteBatch spriteBatch;
 
-        // An image for the player sprite
-        private Texture2D playerImage;
+        // The player
+        private Player player;
         
         // Initalized the game
         public ArcadeFlyerGame()
@@ -31,6 +31,9 @@ namespace ArcadeFlyer2D
 
             // Make mouse visible
             IsMouseVisible = true;
+
+            // Initialize the player to be in the top left
+            player = new Player(this, new Vector2(0.0f, 0.0f));
         }
 
         // Initialize
@@ -44,9 +47,6 @@ namespace ArcadeFlyer2D
         {
             // Create the sprite batch
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            // Load player image
-            playerImage = Content.Load<Texture2D>("MainChar");
         }
 
         // Called every frame
@@ -54,6 +54,9 @@ namespace ArcadeFlyer2D
         {   
             // Update base game
             base.Update(gameTime);
+
+            // Update the player
+            player.Update(gameTime);
         }
 
         // Draw everything in the game
@@ -65,15 +68,11 @@ namespace ArcadeFlyer2D
             // Start batch draw
             spriteBatch.Begin();
 
-            // Rectangle that will contain the Player sprite on the screen
-            Rectangle playerDestinationRect = new Rectangle(0, 0, playerImage.Width, playerImage.Height);
-
-            // Draw the player sprite in the proper place
-            spriteBatch.Draw(playerImage, playerDestinationRect, Color.White);
+            // Draw the player
+            player.Draw(gameTime, spriteBatch);
 
             // End batch draw
             spriteBatch.End();
-
         }
     }
 }
