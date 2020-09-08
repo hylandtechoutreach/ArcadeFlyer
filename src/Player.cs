@@ -5,50 +5,21 @@ using Microsoft.Xna.Framework.Input;
 namespace ArcadeFlyer2D
 {
     // The player, controlled by the keyboard
-    class Player
+    class Player : Sprite
     {
         // A reference to the game that will contain the player
         private ArcadeFlyerGame root;
-
-        // The current position of the player
-        private Vector2 position;
-
-        // An image texture for the player sprite
-        private Texture2D spriteImage;
-
-        // The width of the player sprite
-        private float spriteWidth;
-
-        // The height of the player sprite
-        public float SpriteHeight
-        {
-            get
-            {
-                // Calculated based on the width
-                float scale = spriteWidth / spriteImage.Width;
-                return spriteImage.Height * scale;
-            }
-        }
-        
-        // The properly scaled position rectangle for the player sprite
-        public Rectangle PositionRectangle
-        {
-            get
-            {
-                return new Rectangle((int)position.X, (int)position.Y, (int)spriteWidth, (int)SpriteHeight);
-            }
-        }
 
         // The speed at which the player can move
         private float movementSpeed = 4.0f;
 
         // Initialize a player
-        public Player(ArcadeFlyerGame root, Vector2 position)
+        public Player(ArcadeFlyerGame root, Vector2 position) : base(position)
         {
             // Initialize values
             this.root = root;
             this.position = position;
-            this.spriteWidth = 128.0f;
+            this.SpriteWidth = 128.0f;
 
             // Load the content for the player
             LoadContent();
@@ -58,7 +29,7 @@ namespace ArcadeFlyer2D
         public void LoadContent()
         {
             // Get the MainChar image
-            this.spriteImage = root.Content.Load<Texture2D>("MainChar");
+            this.SpriteImage = root.Content.Load<Texture2D>("MainChar");
         }
 
         // Update position based on input
@@ -103,13 +74,6 @@ namespace ArcadeFlyer2D
 
             // Handle any movement input
             HandleInput(currentKeyboardState);
-        }
-
-        // Draw the player
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
-        {
-            // Use the Sprite Batch to draw
-            spriteBatch.Draw(spriteImage, PositionRectangle, Color.White);
         }
     }
 }
