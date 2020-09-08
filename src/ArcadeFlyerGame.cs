@@ -14,6 +14,25 @@ namespace ArcadeFlyer2D
 
         // The player
         private Player player;
+
+        // An enemy
+        private Enemy enemy;
+
+        // Screen width
+        private int screenWidth = 1600;
+        public int ScreenWidth
+        {
+            get { return screenWidth; }
+            private set { screenWidth = value; }
+        }
+
+        // Screen height
+        private int screenHeight = 900;
+        public int ScreenHeight
+        {
+            get { return screenHeight; }
+            private set { screenHeight = value; }
+        }
         
         // Initalized the game
         public ArcadeFlyerGame()
@@ -22,8 +41,8 @@ namespace ArcadeFlyer2D
             graphics = new GraphicsDeviceManager(this);
 
             // Set the height and width
-            graphics.PreferredBackBufferWidth = 1600;
-            graphics.PreferredBackBufferHeight = 900;
+            graphics.PreferredBackBufferWidth = screenWidth;
+            graphics.PreferredBackBufferHeight = screenHeight;
             graphics.ApplyChanges();
 
             // Set up the directory containing the assets
@@ -34,6 +53,9 @@ namespace ArcadeFlyer2D
 
             // Initialize the player to be in the top left
             player = new Player(this, new Vector2(0.0f, 0.0f));
+            
+            // Initialize an enemy to be on the right side
+            enemy = new Enemy(this, new Vector2(screenWidth, 0));
         }
 
         // Initialize
@@ -55,8 +77,9 @@ namespace ArcadeFlyer2D
             // Update base game
             base.Update(gameTime);
 
-            // Update the player
+            // Update the components
             player.Update(gameTime);
+            enemy.Update(gameTime);
         }
 
         // Draw everything in the game
@@ -68,8 +91,9 @@ namespace ArcadeFlyer2D
             // Start batch draw
             spriteBatch.Begin();
 
-            // Draw the player
+            // Draw the components
             player.Draw(gameTime, spriteBatch);
+            enemy.Draw(gameTime, spriteBatch);
 
             // End batch draw
             spriteBatch.End();
