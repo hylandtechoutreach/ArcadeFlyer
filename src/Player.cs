@@ -13,6 +13,15 @@ namespace ArcadeFlyer2D
         // The speed at which the player can move
         private float movementSpeed = 4.0f;
 
+        // The amount of time before the player can fire another projectile (in seconds)
+        private float projectileCoolDownTime = 0.5f;
+
+        // A timer for the projectile cool down
+        private float projectileTimer = 0.0f;
+
+        // Is the player currently cooling down?
+        private bool projectileTimerActive = false;
+
         // Initialize a player
         public Player(ArcadeFlyerGame root, Vector2 position) : base(position)
         {
@@ -74,6 +83,35 @@ namespace ArcadeFlyer2D
 
             // Handle any movement input
             HandleInput(currentKeyboardState);
+
+            // If able to fire projectiles and Space is pressed...
+            if (!projectileTimerActive && currentKeyboardState.IsKeyDown(Keys.Space))
+            {
+                // Generate the projectile information
+                Vector2 projectilePosition = new Vector2(position.X + SpriteWidth, position.Y + SpriteHeight / 2);
+                Vector2 projectileVelocity = new Vector2(10.0f, 0.0f);
+
+                // Fire the projectile from the main game
+                root.FireProjectile(projectilePosition, projectileVelocity);
+
+                // Start the cool down process
+                projectileTimerActive = true;
+                projectileTimer = 0.0f;
+            }
+
+            // If the player is currently cooling down...
+            if (projectileTimerActive)
+            {
+                // Increment the timer
+                projectileTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                // If all the time has elapsed...
+                if (projectileTimer >= projectileCoolDownTime)
+                {
+                    // Done cooling down!
+                    projectileTimerActive = false;
+                }
+            }
         }
     }
 }
