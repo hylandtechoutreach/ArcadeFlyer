@@ -25,6 +25,9 @@ namespace ArcadeFlyer2D
         // Projectile image for player
         private Texture2D playerProjectileSprite;
 
+        // Projectile image for enemy
+        private Texture2D enemyProjectileSprite;
+
         // Screen width
         private int screenWidth = 1600;
         public int ScreenWidth
@@ -82,6 +85,7 @@ namespace ArcadeFlyer2D
 
             // Load in textures
             playerProjectileSprite = Content.Load<Texture2D>("PlayerFire");
+            enemyProjectileSprite = Content.Load<Texture2D>("EnemyFire");
         }
 
         // Called every frame
@@ -125,10 +129,24 @@ namespace ArcadeFlyer2D
         }
 
         // Fires a projectile with the given position and velocity
-        public void FireProjectile(Vector2 position, Vector2 velocity)
+        public void FireProjectile(Vector2 position, Vector2 velocity, ProjectileType projectileType)
         {
+            // Create the image for the projectile
+            Texture2D projectileImage;
+            
+            if (projectileType == ProjectileType.Player)
+            {
+                // This is a projectile sent from the player, set it to the proper sprite
+                projectileImage = playerProjectileSprite;
+            }
+            else
+            {
+                // This is a projectile sent from the enemy, set it to the proper sprite
+                projectileImage = enemyProjectileSprite;
+            }
+
             // Create the new projectile
-            Projectile firedProjectile = new Projectile(position, velocity, playerProjectileSprite);
+            Projectile firedProjectile = new Projectile(position, velocity, projectileImage);
 
             // Add the projectile to the list
             projectiles.Add(firedProjectile);

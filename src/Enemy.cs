@@ -12,6 +12,9 @@ namespace ArcadeFlyer2D
         // The the velocity for this enemy
         private Vector2 velocity;
 
+        // Cool down timer for projectile firing
+        private Timer projectileCoolDown;
+
         // Initialize an enemy
         public Enemy(ArcadeFlyerGame root, Vector2 position) : base(position)
         {
@@ -20,6 +23,7 @@ namespace ArcadeFlyer2D
             this.position = position;
             this.SpriteWidth = 128.0f;
             this.velocity = new Vector2(-1.0f, 5.0f);
+            this.projectileCoolDown = new Timer(2.0f);
 
             // Load the content for this enemy
             LoadContent();
@@ -43,6 +47,23 @@ namespace ArcadeFlyer2D
             {
                 velocity.Y *= -1;
             }
+
+            // Fire a projectile if not currently cooling down
+            if (!projectileCoolDown.Active)
+            {
+                // Generate the projectile information
+                Vector2 projectilePosition = new Vector2(position.X, position.Y + SpriteHeight / 2);
+                Vector2 projectileVelocity = new Vector2(-5.0f, 0.0f);
+
+                // Fire the projectile from the main game
+                root.FireProjectile(projectilePosition, projectileVelocity, ProjectileType.Enemy);
+
+                // Kick off the cool down process
+                projectileCoolDown.StartTimer();
+            }
+
+            // Update the cool down timer
+            projectileCoolDown.Update(gameTime);
         }
     }
 }
