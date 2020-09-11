@@ -9,13 +9,22 @@ namespace ArcadeFlyer2D
         // The current velocity of the projectile
         private Vector2 velocity;
 
+        // The type for this projectile
+        private ProjectileType projectileType;
+        public ProjectileType ProjectileType
+        {
+            get { return projectileType; }
+            set { projectileType = value; }
+        }
+
         // Initialize a projectile
-        public Projectile(Vector2 position, Vector2 velocity, Texture2D spriteImage) : base(position)
+        public Projectile(Vector2 position, Vector2 velocity, Texture2D spriteImage, ProjectileType projectileType) : base(position)
         {
             // Initialize values
             this.velocity = velocity;
             this.SpriteWidth = 32.0f;
             this.SpriteImage = spriteImage;
+            this.projectileType = projectileType;
         }
 
         // Called each frame

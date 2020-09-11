@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 
 namespace ArcadeFlyer2D
@@ -98,10 +99,27 @@ namespace ArcadeFlyer2D
             player.Update(gameTime);
             enemy.Update(gameTime);
 
-            // Update all projectiles
-            foreach (Projectile p in projectiles)
+            // Loop through projectiles backwards (in order to remove projectiles as needed)
+            for (int i = projectiles.Count - 1; i >= 0; i--)
             {
+                // Update each projectile
+                Projectile p = projectiles[i];
                 p.Update();
+
+                // Is this a player projectile?
+                bool playerProjectile = p.ProjectileType == ProjectileType.Player;
+
+                // Check if the player collides with this non-player projectile
+                if (!playerProjectile && getCollision(player.PositionRectangle, p.PositionRectangle))
+                {
+                    // There is a collision with the player, remove the projectile
+                    projectiles.Remove(p);
+                }
+                else if (playerProjectile && getCollision(enemy.PositionRectangle, p.PositionRectangle))
+                {
+                    // There is a collision with the enemy, remove the projectile
+                    projectiles.Remove(p);
+                }
             }
         }
 
@@ -128,6 +146,25 @@ namespace ArcadeFlyer2D
             spriteBatch.End();
         }
 
+        // Check for collisions between bounding rectangles
+        private bool getCollision(Rectangle spriteBounds1, Rectangle spriteBounds2)
+        {
+            // Get the center points
+            Point sprite1Center = spriteBounds1.Center;
+            Point sprite2Center = spriteBounds2.Center;
+
+            // Get the distances between the rectangle centers
+            float xDistance = Math.Abs(sprite1Center.X - sprite2Center.X);
+            float yDistance = Math.Abs(sprite1Center.Y - sprite2Center.Y);
+
+            // Get the distances required for collision across each axis
+            float collisionDistanceX = (spriteBounds1.Width / 2) + (spriteBounds2.Width / 2);
+            float collisionDistanceY = (spriteBounds1.Height / 2) + (spriteBounds2.Height / 2);
+
+            // Check for overlap on BOTH axes
+            return xDistance <= collisionDistanceX && yDistance <= collisionDistanceY;
+        }
+
         // Fires a projectile with the given position and velocity
         public void FireProjectile(Vector2 position, Vector2 velocity, ProjectileType projectileType)
         {
@@ -146,7 +183,7 @@ namespace ArcadeFlyer2D
             }
 
             // Create the new projectile
-            Projectile firedProjectile = new Projectile(position, velocity, projectileImage);
+            Projectile firedProjectile = new Projectile(position, velocity, projectileImage, projectileType);
 
             // Add the projectile to the list
             projectiles.Add(firedProjectile);
