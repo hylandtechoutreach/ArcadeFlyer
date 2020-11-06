@@ -17,8 +17,11 @@ namespace ArcadeFlyer2D
         // The player
         private Player player;
 
-        // An enemy
-        private Enemy enemy;
+        // A List of enemies
+        private List<Enemy> enemies;
+
+        // A timer for enemy generation
+        private Timer enemyCreationTimer;
 
         // List of all projectiles on the screen
         private List<Projectile> projectiles;
@@ -64,9 +67,16 @@ namespace ArcadeFlyer2D
 
             // Initialize the player to be in the top left
             player = new Player(this, new Vector2(0.0f, 0.0f));
+
+            // Initialize empty list of enemies
+            enemies = new List<Enemy>();
             
-            // Initialize an enemy to be on the right side
-            enemy = new Enemy(this, new Vector2(screenWidth, 0));
+            // Add an enemy to be on the right side
+            enemies.Add(new Enemy(this, new Vector2(screenWidth, 0)));
+
+            // Initialize enemy creation timer
+            enemyCreationTimer = new Timer(3.0f);
+            enemyCreationTimer.StartTimer();
 
             // Initialize empty list of projectiles
             projectiles = new List<Projectile>();
@@ -95,9 +105,14 @@ namespace ArcadeFlyer2D
             // Update base game
             base.Update(gameTime);
 
-            // Update the components
+            // Update the player
             player.Update(gameTime);
-            enemy.Update(gameTime);
+
+            // Update each enemy in the list
+            foreach (Enemy enemy in enemies)
+            {
+                enemy.Update(gameTime);
+            }
 
             // Loop through projectiles backwards (in order to remove projectiles as needed)
             for (int i = projectiles.Count - 1; i >= 0; i--)
@@ -115,12 +130,40 @@ namespace ArcadeFlyer2D
                     // There is a collision with the player, remove the projectile
                     projectiles.Remove(p);
                 }
-                else if (playerProjectile && getCollision(enemy.PositionRectangle, p.PositionRectangle))
+                else if (playerProjectile)
                 {
-                    // There is a collision with the enemy, remove the projectile
-                    projectiles.Remove(p);
+                    // Loop through enemies backwards (in order to remove them as needed)
+                    for (int enemyIdx = enemies.Count - 1; enemyIdx >= 0; enemyIdx--)
+                    {
+                        // Get the current enemy
+                        Enemy enemy = enemies[enemyIdx];
+
+                        // Check if this enemy collides with the player projectile
+                        if (getCollision(enemy.PositionRectangle, p.PositionRectangle))
+                        {
+                            // There is a collision with the enemy, remove the projectile
+                            projectiles.Remove(p);
+
+                            // Remove the enemy as well
+                            enemies.Remove(enemy);
+                            //enemies.Add(new Enemy(this, new Vector2(screenWidth, 0)));
+                        }
+                    }
                 }
             }
+
+            // Enemy creation timer is up
+            if (!enemyCreationTimer.Active)
+            {
+                // Add a new enemy to the list
+                enemies.Add(new Enemy(this, new Vector2(screenWidth, 0.0f)));
+
+                // Re-start the timer
+                enemyCreationTimer.StartTimer();
+            }
+
+            // Update the enemy creation timer
+            enemyCreationTimer.Update(gameTime);
         }
 
         // Draw everything in the game
@@ -132,9 +175,14 @@ namespace ArcadeFlyer2D
             // Start batch draw
             spriteBatch.Begin();
 
-            // Draw the components
+            // Draw the player
             player.Draw(gameTime, spriteBatch);
-            enemy.Draw(gameTime, spriteBatch);
+
+            // Draw each enemy
+            foreach (Enemy enemy in enemies)
+            {
+                enemy.Draw(gameTime, spriteBatch);
+            }
 
             // Draw all projectiles
             foreach (Projectile p in projectiles)
