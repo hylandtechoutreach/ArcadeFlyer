@@ -146,7 +146,6 @@ namespace ArcadeFlyer2D
 
                             // Remove the enemy as well
                             enemies.Remove(enemy);
-                            //enemies.Add(new Enemy(this, new Vector2(screenWidth, 0)));
                         }
                     }
                 }
