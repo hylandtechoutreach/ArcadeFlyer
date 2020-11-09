@@ -14,6 +14,15 @@ namespace ArcadeFlyer2D
         // Sprite Drawer
         private SpriteBatch spriteBatch;
 
+        // Text Drawer
+        private SpriteFont textFont;
+
+        // Keep track of the player's remaining lives
+        private int life = 3;
+
+        // Keep track of the player's current score
+        private int score = 0;
+
         // The player
         private Player player;
 
@@ -61,6 +70,9 @@ namespace ArcadeFlyer2D
 
             // Set up the directory containing the assets
             Content.RootDirectory = "Content";
+
+            // Initialize the font
+            textFont = Content.Load<SpriteFont>("Text");
 
             // Make mouse visible
             IsMouseVisible = true;
@@ -129,6 +141,9 @@ namespace ArcadeFlyer2D
                 {
                     // There is a collision with the player, remove the projectile
                     projectiles.Remove(p);
+
+                    // Decrement life
+                    life--;
                 }
                 else if (playerProjectile)
                 {
@@ -146,6 +161,9 @@ namespace ArcadeFlyer2D
 
                             // Remove the enemy as well
                             enemies.Remove(enemy);
+                            
+                            // Increment score
+                            score++;
                         }
                     }
                 }
@@ -188,6 +206,9 @@ namespace ArcadeFlyer2D
             {
                 p.Draw(gameTime, spriteBatch);
             }
+
+            // Draw Life count and Score count
+            spriteBatch.DrawString(textFont, $"Life: {life}\nScore: {score}", Vector2.Zero, Color.Black);
 
             // End batch draw
             spriteBatch.End();
