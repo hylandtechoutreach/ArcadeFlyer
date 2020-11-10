@@ -23,6 +23,9 @@ namespace ArcadeFlyer2D
         // Keep track of the player's current score
         private int score = 0;
 
+        // Is the game over?
+        private bool gameOver = false;
+
         // The player
         private Player player;
 
@@ -114,6 +117,13 @@ namespace ArcadeFlyer2D
         // Called every frame
         protected override void Update(GameTime gameTime)
         {   
+            // If the game is over...
+            if (gameOver)
+            {
+                // Return early, don't do anything else
+                return;
+            }
+
             // Update base game
             base.Update(gameTime);
 
@@ -144,6 +154,13 @@ namespace ArcadeFlyer2D
 
                     // Decrement life
                     life--;
+
+                    // If life has gone below 1
+                    if (life < 1)
+                    {
+                        // End the game
+                        gameOver = true;
+                    }
                 }
                 else if (playerProjectile)
                 {
@@ -186,7 +203,29 @@ namespace ArcadeFlyer2D
         // Draw everything in the game
         protected override void Draw(GameTime gameTime)
         {
-            // First clear the screen
+            // If the game is over..
+            if (gameOver)
+            {
+                // First clear the screen
+                GraphicsDevice.Clear(Color.Black);
+
+                // Start batch draw
+                spriteBatch.Begin();
+
+                // Position in the middle of the screen
+                Vector2 textPosition = new Vector2(screenWidth / 2, screenHeight / 2);
+
+                // Draw the final message
+                spriteBatch.DrawString(textFont, $"Game Over :(\nFinal Score: {score}", textPosition, Color.White);
+
+                // End batch draw
+                spriteBatch.End();
+
+                // Return early, don't draw anything else
+                return;
+            }
+
+            // Game is not over, clear the screen white
             GraphicsDevice.Clear(Color.White);
 
             // Start batch draw
