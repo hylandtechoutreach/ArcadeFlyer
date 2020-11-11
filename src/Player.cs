@@ -73,17 +73,7 @@ namespace ArcadeFlyer2D
             {
                 position.X += movementSpeed;
             }
-        }
-
-        // Called each frame
-        public void Update(GameTime gameTime)
-        {   
-            // Get current keyboard state
-            KeyboardState currentKeyboardState = Keyboard.GetState();
-
-            // Handle any movement input
-            HandleInput(currentKeyboardState);
-
+            
             // If able to fire projectiles and Space is pressed...
             if (!projectileTimerActive && currentKeyboardState.IsKeyDown(Keys.Space))
             {
@@ -98,6 +88,16 @@ namespace ArcadeFlyer2D
                 projectileTimerActive = true;
                 projectileTimer = 0.0f;
             }
+        }
+
+        // Called each frame
+        public void Update(GameTime gameTime)
+        {   
+            // Get current keyboard state
+            KeyboardState currentKeyboardState = Keyboard.GetState();
+
+            // Handle any movement input
+            HandleInput(currentKeyboardState);
 
             // If the player is currently cooling down...
             if (projectileTimerActive)
