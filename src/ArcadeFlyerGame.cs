@@ -137,7 +137,7 @@ namespace ArcadeFlyer2D
                 bool playerProjectile = p.ProjectileType == ProjectileType.Player;
 
                 // Check if the player collides with this non-player projectile
-                if (!playerProjectile && getCollision(player.PositionRectangle, p.PositionRectangle))
+                if (!playerProjectile && player.Overlaps(p))
                 {
                     // There is a collision with the player, remove the projectile
                     projectiles.Remove(p);
@@ -154,7 +154,7 @@ namespace ArcadeFlyer2D
                         Enemy enemy = enemies[enemyIdx];
 
                         // Check if this enemy collides with the player projectile
-                        if (getCollision(enemy.PositionRectangle, p.PositionRectangle))
+                        if (enemy.Overlaps(p))
                         {
                             // There is a collision with the enemy, remove the projectile
                             projectiles.Remove(p);
@@ -212,25 +212,6 @@ namespace ArcadeFlyer2D
 
             // End batch draw
             spriteBatch.End();
-        }
-
-        // Check for collisions between bounding rectangles
-        private bool getCollision(Rectangle spriteBounds1, Rectangle spriteBounds2)
-        {
-            // Get the center points
-            Point sprite1Center = spriteBounds1.Center;
-            Point sprite2Center = spriteBounds2.Center;
-
-            // Get the distances between the rectangle centers
-            float xDistance = Math.Abs(sprite1Center.X - sprite2Center.X);
-            float yDistance = Math.Abs(sprite1Center.Y - sprite2Center.Y);
-
-            // Get the distances required for collision across each axis
-            float collisionDistanceX = (spriteBounds1.Width / 2) + (spriteBounds2.Width / 2);
-            float collisionDistanceY = (spriteBounds1.Height / 2) + (spriteBounds2.Height / 2);
-
-            // Check for overlap on BOTH axes
-            return xDistance <= collisionDistanceX && yDistance <= collisionDistanceY;
         }
 
         // Fires a projectile with the given position and velocity
